@@ -1,12 +1,13 @@
 package red.social.interesescomunes.role.application.command;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class DeleteRolCommand {
     private Long id;
 }

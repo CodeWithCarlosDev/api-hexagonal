@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import red.social.interesescomunes.role.application.command.CreateIRoleCommand;
 import red.social.interesescomunes.role.application.command.DeleteRolCommand;
 import red.social.interesescomunes.role.application.command.UpdateRoleCommand;
+import red.social.interesescomunes.role.application.query.FindRoleByIdQuery;
 import red.social.interesescomunes.role.application.service.IRoleService;
 import red.social.interesescomunes.role.domain.model.Role;
 import red.social.interesescomunes.role.infrastructure.api.dto.RoleResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/roles")
@@ -23,9 +25,9 @@ public class RoleController {
 
     @GetMapping("/find/{id}")
     public ResponseEntity<RoleResponse> findRoleById(@PathVariable Long id){
-        RoleResponse roleResponse = this.roleService.findRoleById(id)
+        RoleResponse roleResponse = this.roleService.findRoleById(new FindRoleByIdQuery(id))
                 .map( role -> new RoleResponse(role.getId(), role.getNombre(), role.getDescripcion()))
-                .get();
+                .orElseThrow();
         return  ResponseEntity.ok(roleResponse);
     }
 
@@ -40,7 +42,7 @@ public class RoleController {
 
     @PostMapping("/create")
     public ResponseEntity<RoleResponse> createRole(@RequestBody CreateIRoleCommand command){
-        Role createdRole = this.roleService.createRole(command);
+        RoleResponse createdRole = this.roleService.createRole(command);
         RoleResponse response = RoleResponse.builder()
             .id(createdRole.getId())
             .nombre(createdRole.getNombre())
@@ -51,19 +53,15 @@ public class RoleController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<RoleResponse> updateRole(@PathVariable Long id, @RequestBody UpdateRoleCommand command){
-        Role updateRole = this.roleService.updateRole(id,command);
-        RoleResponse response = RoleResponse.builder()
-            .id(updateRole.getId())
-            .nombre(updateRole.getNombre())
-            .descripcion(updateRole.getDescripcion())
-            .build();
-        return ResponseEntity.ok(response);
+        RoleResponse role = this.roleService.findRoleById(new FindRoleByIdQuery(id)).orElseThrow();
+        command.setId(role.getId());
+        RoleResponse roleUpdate = this.roleService.updateRole(command);
+        return ResponseEntity.ok(roleUpdate);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleRoleById(@PathVariable Long id) {
-        DeleteRolCommand command = DeleteRolCommand.builder().id(id).build();
-        this.roleService.deleteRoleById(command);
+        this.roleService.deleteRoleById(new DeleteRolCommand(id));
         return ResponseEntity.status(HttpStatus.OK).body("Se elimino correctamente");
     }
 

@@ -1,12 +1,13 @@
 package red.social.interesescomunes.role.application.query;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
-public class FindRoleQuery {
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class FindRoleByIdQuery {
     private Long id;
 }
