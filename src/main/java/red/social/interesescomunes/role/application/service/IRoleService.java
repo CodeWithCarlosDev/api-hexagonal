@@ -1,17 +1,20 @@
 package red.social.interesescomunes.role.application.service;
 
-import red.social.interesescomunes.role.application.command.CreateIRoleCommand;
-import red.social.interesescomunes.role.application.command.DeleteRolCommand;
+import red.social.interesescomunes.role.application.command.CreateRoleCommand;
+import red.social.interesescomunes.role.application.command.DeleteRoleCommand;
 import red.social.interesescomunes.role.application.command.UpdateRoleCommand;
-import red.social.interesescomunes.role.domain.model.Role;
+import red.social.interesescomunes.role.application.query.FindRoleByIdQuery;
+import red.social.interesescomunes.role.infrastructure.api.dto.RoleDto;
+
 
 import java.util.List;
 import java.util.Optional;
 
+// interfaz que define los casos del rol del usuario en la aplicacion
 public interface IRoleService {
-    List<Role> findAllRoles();
-    Optional<Role> findRoleById(Long id);
-    Role createRole(CreateIRoleCommand command);
-    Role updateRole(Long id, UpdateRoleCommand command);
-    void deleteRoleById(DeleteRolCommand command);
+    Optional<List<RoleDto>> findAllRoles();
+    Optional<RoleDto> findRoleById(FindRoleByIdQuery query);
+    RoleDto createRole(CreateRoleCommand command);
+    RoleDto updateRole(UpdateRoleCommand command);
+    void deleteRoleById(DeleteRoleCommand command);
 }

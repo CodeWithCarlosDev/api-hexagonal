@@ -7,15 +7,15 @@ import red.social.interesescomunes.role.infrastructure.api.dto.RoleDto;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class UpdateRoleCommand  {
-    private Long id;
+public class CreateRoleCommand {
     private TypeRole nombre;
     private String descripcion;
 
-    public static UpdateRoleCommand create(RoleDto role){
-        return UpdateRoleCommand.builder()
-                .id(role.getId())
+    public static CreateRoleCommand create(RoleDto role){
+        return CreateRoleCommand.builder()
                 .nombre(role.getNombre())
                 .descripcion(role.getDescripcion())
                 .build();

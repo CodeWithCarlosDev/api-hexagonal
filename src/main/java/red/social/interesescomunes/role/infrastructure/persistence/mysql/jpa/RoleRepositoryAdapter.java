@@ -1,4 +1,4 @@
-package red.social.interesescomunes.role.infrastructure.persistence;
+package red.social.interesescomunes.role.infrastructure.persistence.mysql.jpa;
 
 import org.springframework.stereotype.Component;
 import red.social.interesescomunes.role.domain.model.Role;
@@ -20,19 +20,19 @@ public class RoleRepositoryAdapter implements IRoleRepository {
     public List<Role> findAll() {
         List<RoleEntity> rolesEntities = (List<RoleEntity>) this.roleRepository.findAll();
         return rolesEntities.stream()
-                .map(this::toDomain)
-                .toList();
+            .map(RoleRepositoryAdapter::toDomain)
+            .toList();
     }
 
     @Override
     public Optional<Role> findById(Long id) {
-       return  this.roleRepository.findById(id).map(this::toDomain);
+       return  this.roleRepository.findById(id).map(RoleRepositoryAdapter::toDomain);
     }
 
     @Override
     public Role save(Role role) {
-         RoleEntity roleEntity = this.roleRepository.save( this.toEntity(role) );
-         return this.toDomain(roleEntity);
+         RoleEntity roleEntity = this.roleRepository.save( RoleRepositoryAdapter.toEntity(role) );
+         return RoleRepositoryAdapter.toDomain(roleEntity);
     }
 
     @Override
@@ -40,19 +40,19 @@ public class RoleRepositoryAdapter implements IRoleRepository {
         this.roleRepository.deleteById(id);
     }
 
-    private Role toDomain(RoleEntity entity){
+    public static Role toDomain(RoleEntity entity){
         return Role.builder()
-                .id(entity.getId())
-                .nombre(entity.getNombre())
-                .descripcion(entity.getDescripcion())
-                .build();
+            .id(entity.getId())
+            .nombre(entity.getNombre())
+            .descripcion(entity.getDescripcion())
+            .build();
     }
 
-    private RoleEntity toEntity(Role role){
+    public static RoleEntity toEntity(Role role){
         return RoleEntity.builder()
-                .id(role.getId())
-                .nombre(role.getNombre())
-                .descripcion(role.getDescripcion())
-                .build();
+            .id(role.getId())
+            .nombre(role.getNombre())
+            .descripcion(role.getDescripcion())
+            .build();
     }
 }
