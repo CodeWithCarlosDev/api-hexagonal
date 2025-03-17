@@ -9,18 +9,14 @@ import red.social.interesescomunes.role.domain.event.RoleUpdatedEvent;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     private Long id;
-    private String nombre;
+    private TypeRole nombre;
     private String descripcion;
     private ApplicationEventPublisher eventPublisher;
-
-    public Role(ApplicationEventPublisher eventPublisher){
-        this.eventPublisher = eventPublisher;
-    }
 
     // evento de crear un rol
     public void create(){
@@ -36,4 +32,5 @@ public class Role {
     public void delete(){
         this.eventPublisher.publishEvent(new RoleDeletedEvent(this));
     }
+
 }

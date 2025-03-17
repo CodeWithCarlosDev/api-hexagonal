@@ -1,4 +1,4 @@
-package red.social.interesescomunes.role.infrastructure.persistence;
+package red.social.interesescomunes.role.infrastructure.persistence.mysql.jpa;
 
 import org.springframework.data.repository.CrudRepository;
 
